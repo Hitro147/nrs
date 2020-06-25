@@ -4,14 +4,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 # Create your views here.
 
 def requests(request):
-    all_requests = RequestItem.objects.all()
+    all_requests = RequestItem.objects.order_by('-votes')
     context = {'all_requests': all_requests}
     return render(request, 'requests/main.html', context)
 
 def addReq(request):
         req = request.POST['content']
         all_req = RequestItem.objects.all()
-        if req in all_req:
+        if req not in all_req:
             new_req = RequestItem(content = req)
             new_req.save()
             return HttpResponseRedirect('/')
